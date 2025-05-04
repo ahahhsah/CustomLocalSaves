@@ -12,6 +12,7 @@
 #include "native_hooks.hpp"
 
 #include "all_scripts.hpp"
+#include "fm_maintain_cloud_header_data.hpp"
 #include "crossmap.hpp"
 #include "gta_util.hpp"
 
@@ -110,10 +111,29 @@ namespace big
 
 	native_hooks::native_hooks()
 	{
-		add_native_detour(0x6BFB12CE158E3DD4, all_scripts::SC_TRANSITION_NEWS_SHOW);       // Stops news.
-		add_native_detour(0xFE4C1D0D3B9CC17E, all_scripts::SC_TRANSITION_NEWS_SHOW_TIMED); // Stops news.
+		add_native_detour(0x7D2708796355B20B, all_scripts::RETURN_FALSE); // NET_GAMESERVER_USE_SERVER_TRANSACTIONS
+		add_native_detour(0x84B418E93894AC1C, all_scripts::RETURN_FALSE); // SAVEMIGRATION_IS_MP_ENABLED
+		add_native_detour(0x7F2C4CDF2E82DF4C, all_scripts::RETURN_FALSE); // STAT_CLOUD_SLOT_LOAD_FAILED
+		add_native_detour(0xE496A53BA5F50A56, all_scripts::RETURN_FALSE); // STAT_CLOUD_SLOT_LOAD_FAILED_CODE
+		add_native_detour(0xC0E0D686DDFC6EAE, all_scripts::RETURN_TRUE); // STAT_GET_LOAD_SAFE_TO_PROGRESS_TO_MP_FROM_SP
+		add_native_detour(0xD9719341663C385F, all_scripts::RETURN_TRUE); // _NETWORK_HAS_ROS_PRIVILEGE_MP_TEXT_COMMUNICATION
+		add_native_detour(0x8956A309BE90057C, all_scripts::RETURN_TRUE); // _NETWORK_HAS_ROS_PRIVILEGE_MP_VOICE_COMMUNICATION
+		add_native_detour(0xE1E02509169C124E, all_scripts::RETURN_TRUE); // _NETWORK_HAVE_PLATFORM_COMMUNICATION_PRIVILEGES
 
-		add_native_detour(RAGE_JOAAT("shop_controller"), 0x34616828CD07F1A1, all_scripts::RETURN_FALSE); // prevent exploit reports
+		add_native_detour(0xC87E740D9F3872CC, fm_maintain_cloud_header_data::UGC_WAS_QUERY_FORCE_CANCELLED);
+		/*
+		add_native_detour(0x158EC424F35EC469, all_scripts::RETURN_TRUE); // UGC_QUERY_BY_CONTENT_ID
+		add_native_detour(0x815E5E3073DA1D67, all_scripts::RETURN_TRUE); // UGC_GET_GET_BY_CONTENT_ID
+		add_native_detour(0x02ADA21EA2F6918F, all_scripts::RETURN_TRUE); // UGC_HAS_GET_FINISHED
+		add_native_detour(0x941E5306BCD7C2C7, all_scripts::RETURN_FALSE); // UGC_DID_GET_SUCCEED
+		add_native_detour(RAGE_JOAAT("fm_maintain_cloud_header_data"), 0xE0A6138401BCB837, all_scripts::RETURN_FALSE); // UGC_GET_CONTENT_NUM
+		add_native_detour(RAGE_JOAAT("fm_maintain_cloud_header_data"), 0x4C61B39930D045DA, all_scripts::RETURN_TRUE); // CLOUD_HAS_REQUEST_COMPLETED
+		add_native_detour(RAGE_JOAAT("fm_maintain_cloud_header_data"), 0x3A3D5568AF297CD5, all_scripts::RETURN_TRUE); // CLOUD_DID_REQUEST_SUCCEED
+		add_native_detour(0xFD75DABC0957BF33, all_scripts::UGC_SET_USING_OFFLINE_CONTENT);
+		add_native_detour(0xF98DDE0A8ED09323, all_scripts::UGC_SET_QUERY_DATA_FROM_OFFLINE);
+		*/
+
+		add_native_detour(0x0395CB47B022E62C, all_scripts::NET_GAMESERVER_RETRIEVE_INIT_SESSION_STATUS);
 
 		for (auto& entry : *g_pointers->m_script_program_table)
 			if (entry.m_program)

@@ -20,16 +20,19 @@ namespace big
 {
 	namespace all_scripts
 	{
-		inline void SC_TRANSITION_NEWS_SHOW(rage::scrNativeCallContext* src)
+		inline void UGC_SET_USING_OFFLINE_CONTENT(rage::scrNativeCallContext* src)
 		{
-			LOG(VERBOSE) << "SC_TRANSITION_NEWS_SHOW";
-			src->set_return_value<BOOL>(SOCIALCLUB::SC_TRANSITION_NEWS_SHOW(src->get_arg<Any>(0)));
+			NETWORK::UGC_SET_USING_OFFLINE_CONTENT(TRUE);
+		}
+		inline void UGC_SET_QUERY_DATA_FROM_OFFLINE(rage::scrNativeCallContext* src)
+		{
+			NETWORK::UGC_SET_USING_OFFLINE_CONTENT(TRUE);
 		}
 
-		inline void SC_TRANSITION_NEWS_SHOW_TIMED(rage::scrNativeCallContext* src)
+		inline void NET_GAMESERVER_RETRIEVE_INIT_SESSION_STATUS(rage::scrNativeCallContext* src)
 		{
-			LOG(VERBOSE) << "SC_TRANSITION_NEWS_SHOW_TIMED";
-			src->set_return_value<BOOL>(SOCIALCLUB::SC_TRANSITION_NEWS_SHOW_TIMED(src->get_arg<Any>(0), src->get_arg<Any>(0)));
+			*src->get_arg<int*>(0) = 3;
+			src->set_return_value<BOOL>(TRUE);
 		}
 
 		void RETURN_TRUE(rage::scrNativeCallContext* src)

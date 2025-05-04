@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.20)
 include(cmake/crosscompile.cmake)
 
 # Change the name here to change it everywhere
-project(BigBaseV2 CXX ASM_MASM)
+project(CLS CXX ASM_MASM)
 
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 

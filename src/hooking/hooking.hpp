@@ -11,19 +11,10 @@ namespace big
 	struct hooks
 	{
 		static bool run_script_threads(std::uint32_t ops_to_execute);
-
-		static constexpr auto swapchain_num_funcs           = 19;
-		static constexpr auto swapchain_present_index       = 8;
-		static constexpr auto swapchain_resizebuffers_index = 13;
-		static HRESULT swapchain_present(IDXGISwapChain* this_, UINT sync_interval, UINT flags);
-		static HRESULT swapchain_resizebuffers(IDXGISwapChain* this_, UINT buffer_count, UINT width, UINT height, DXGI_FORMAT new_format, UINT swapchain_flags);
-
-		static LRESULT wndproc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-		static BOOL set_cursor_pos(int x, int y);
-
-		static int queue_dependency(void* a1, int a2, int64_t dependency);
 		static bool init_native_tables(rage::scrProgram* program);
-		static rage::eThreadState script_vm(uint64_t* start_stack, uint64_t** scr_globals, rage::scrProgram* program, rage::scrThreadContext* ctx);
+
+		static uint32_t network_can_access_multiplayer(uint32_t a1, uint64_t* a2);
+		static bool get_stat_flag_bool(void* p0, const char* flag, bool default_, bool p4);
 	};
 
 	class minhook_keepalive

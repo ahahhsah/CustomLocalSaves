@@ -41,9 +41,10 @@ namespace big
 		}
 
 		detour_hook_helper::add<hooks::run_script_threads>("Script hook", (void*)g_pointers->m_run_script_threads);
-		detour_hook_helper::add<hooks::queue_dependency>("Queue Dependency", (void*)g_pointers->m_queue_dependency);
 		detour_hook_helper::add<hooks::init_native_tables>("Init Native Tables", (void*)g_pointers->m_init_native_tables);
-		detour_hook_helper::add<hooks::script_vm>("Script VM", (void*)g_pointers->m_script_vm);
+
+		detour_hook_helper::add<hooks::network_can_access_multiplayer>("Network Can Access Multiplayer", (void*)g_pointers->m_network_can_access_multiplayer);
+		detour_hook_helper::add<hooks::get_stat_flag_bool>("Get Stat Flag Bool", (void*)g_pointers->m_get_stat_flag_bool);
 
 		g_hooking = this;
 	}

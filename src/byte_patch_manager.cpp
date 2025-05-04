@@ -18,9 +18,14 @@ namespace big
 {
 	static void init()
 	{
-		/**
-		 * @todo Add some example patches 
-		 */
+		memory::byte_patch::make(g_pointers->m_skip_money_check1.as<PVOID>(), std::vector{0x48, 0xE9})->apply();
+		memory::byte_patch::make(g_pointers->m_skip_money_check2.as<PVOID>(), std::vector{0x48, 0xE9})->apply();
+		memory::byte_patch::make(g_pointers->m_skip_money_check3.as<PVOID>(), std::vector{0x90, 0x90})->apply();
+		memory::byte_patch::make(g_pointers->m_skip_money_check3.add(115).as<PVOID>(), std::vector{0x90, 0x90})->apply();
+		memory::byte_patch::make(g_pointers->m_skip_money_check5.as<PVOID>(), std::vector{0x90, 0x90})->apply();
+		memory::byte_patch::make(g_pointers->m_skip_money_check6.as<PVOID>(), std::vector{0x90, 0x90})->apply();
+		memory::byte_patch::make(g_pointers->m_file_not_found_check.as<PVOID>(), std::vector{0x90, 0x90})->apply(); // When a cloud file failes to load, create a new one
+		memory::byte_patch::make(g_pointers->m_profile_stats_skip.as<PVOID>(), std::vector{0x48, 0xE9})->apply();   // 
 	}
 
 	byte_patch_manager::byte_patch_manager()

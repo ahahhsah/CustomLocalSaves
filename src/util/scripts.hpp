@@ -15,7 +15,6 @@
 #include "gta_util.hpp"
 #include "natives.hpp"
 #include "script.hpp"
-#include "script_local.hpp"
 #include "memory/pattern.hpp"
 
 #include <script/scrProgram.hpp>

@@ -18,10 +18,6 @@ namespace big
 		HWND m_hwnd{};
 
 		eGameState* m_game_state{};
-		bool* m_is_session_started{};
-
-		rage::game_skeleton* m_game_skeleton;
-		void (*m_nullsub)();
 
 		CPedFactory** m_ped_factory{};
 		CNetworkPlayerMgr** m_network_player_mgr{};
@@ -35,18 +31,21 @@ namespace big
 		functions::run_script_threads_t m_run_script_threads{};
 		std::int64_t** m_script_globals{};
 		PVOID m_init_native_tables{};
-		functions::script_vm m_script_vm{};
 
 		CGameScriptHandlerMgr** m_script_handler_mgr{};
 
-		IDXGISwapChain** m_swapchain{};
+		memory::handle m_skip_money_check1;
+		memory::handle m_skip_money_check2;
+		memory::handle m_skip_money_check3;
+		memory::handle m_skip_money_check5;
+		memory::handle m_skip_money_check6;
+		memory::handle m_file_not_found_check;
+		memory::handle m_profile_stats_skip;
 
-		PVOID m_model_spawn_bypass;
+		PVOID m_get_stat_flag_bool;
 
-		functions::ptr_to_handle m_ptr_to_handle{};
-		functions::handle_to_ptr m_handle_to_ptr{};
-
-		PVOID m_queue_dependency;
+		PVOID m_network_can_access_multiplayer;
+		bool m_network_can_access_multiplayer_already_hooked = false;
 	};
 
 	inline pointers* g_pointers{};
