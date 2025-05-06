@@ -15,7 +15,9 @@ namespace big
 		void register_stat(sStatData* data, const char* name);
 		void delete_stat(sStatData* data);
 
-		private:
+		sStatData* get_stat_by_hash(Hash stat);
+
+	private:
 		std::unordered_map<sStatData*, Hash> m_all_stats;
 
 		std::unordered_map<Hash, int> m_int_stats;

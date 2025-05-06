@@ -1,8 +1,10 @@
 #include "stats_service.hpp"
 
 #include "file_manager.hpp"
+#include "gta/joaat.hpp"
 #include "gta/stat.hpp"
 #include "security/ObfVar.hpp"
+
 #include <cstddef>
 
 namespace big
@@ -28,6 +30,18 @@ namespace big
 	void stats_service::delete_stat(sStatData* data)
 	{
 		m_all_stats.erase(data);
+	}
+
+	sStatData* stats_service::get_stat_by_hash(Hash stat_to_find)
+	{
+		for(auto stat : m_all_stats)
+		{
+			if(stat.second == stat_to_find)
+			{
+				return stat.first;
+			}
+		}
+		return nullptr;
 	}
 
 	void stats_service::save_stats()
@@ -261,18 +275,26 @@ namespace big
 						stat.first->SetUint64Data(m_userid_stats[stat.second]);
 					break;
 				}
+				case eStatType::PROFILE_SETTING: break;
 				default:
 				{
-					LOG(VERBOSE) << "Unknown stat type: " << (int)stat.first->GetTypeId() << "In stat: " << stat.second;
+					LOGF(WARNING, "Unknown stat type: {} In stat: {}", (int)stat.first->GetTypeId(), stat.second);
 					break;
 				}
+				}
+
+				// Fixes the character creator always activating.
+				if(stat.second == RAGE_JOAAT("MP0_CHAR_IS_NGPC_VERSION")
+					|| stat.second == RAGE_JOAAT("MP1_CHAR_IS_NGPC_VERSION"))
+				{
+					stat.first->SetIntData(1);
 				}
 			}
 			result = true;
 		}
-		catch (const std::exception&)
+		catch (const std::exception& ex)
 		{
-			LOG(WARNING) << "Detected corrupt save file.";
+			LOG(WARNING) << "Detected corrupt save file: " << ex.what();
 		}
 		file.close();
 

@@ -54,6 +54,9 @@ namespace big
 		PVOID m_mp_stats_save;
 		PVOID m_mp_stats_load;
 		PVOID m_mp_save_download;
+		int* m_mp_save_download_error;
+
+		PVOID m_construct_basket;
 	};
 
 	inline pointers* g_pointers{};

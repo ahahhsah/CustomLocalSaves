@@ -120,6 +120,9 @@ namespace big
 		add_native_detour(0x8956A309BE90057C, all_scripts::RETURN_TRUE); // _NETWORK_HAS_ROS_PRIVILEGE_MP_VOICE_COMMUNICATION
 		add_native_detour(0xE1E02509169C124E, all_scripts::RETURN_TRUE); // _NETWORK_HAVE_PLATFORM_COMMUNICATION_PRIVILEGES
 
+		add_native_detour(0xF70EFA14FE091429, all_scripts::WITHDRAW_VC);
+		add_native_detour(0xE260E0BB9CD995AC, all_scripts::DEPOSIT_VC);
+
 		add_native_detour(0xC87E740D9F3872CC, fm_maintain_cloud_header_data::UGC_WAS_QUERY_FORCE_CANCELLED);
 		/*
 		add_native_detour(0x158EC424F35EC469, all_scripts::RETURN_TRUE); // UGC_QUERY_BY_CONTENT_ID

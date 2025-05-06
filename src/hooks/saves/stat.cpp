@@ -1,6 +1,7 @@
 #include "gta/stat.hpp"
 #include "hooking/hooking.hpp"
 #include "logger/logger.hpp"
+#include "pointers.hpp"
 #include "services/stats/stats_service.hpp"
 
 namespace big
@@ -29,10 +30,17 @@ namespace big
 	}
 	bool hooks::mp_save_download(void* _this)
 	{
-		if(*(int*)((uint8_t*)_this+0x14) == 3)
+		if(*(int*)((size_t)_this+0x14) == 3)
 		{
-			LOG(INFO) << "Loading custom stats";
-			g_stats_service->load_stats();
+			LOG(VERBOSE) << "Loading custom stats, Index: " << *(int*)((size_t)_this+0x10);
+			if(g_stats_service->load_stats() && !g.always_load_into_character_creator)
+			{
+				// Set the load as successful
+				LOG(VERBOSE) << "Setting load as successful";
+				*g_pointers->m_mp_save_download_error = 0;
+				*(bool*)((size_t)_this+0x2E0) = true;
+				*(bool*)((size_t)_this+0x2E1) = false;
+			}
 		}
 		bool ret = g_hooking->get_original<hooks::mp_save_download>()(_this);
 		return ret;

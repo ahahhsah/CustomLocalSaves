@@ -94,6 +94,12 @@ namespace big
 		});
 		main_batch.add("MP Save Download", "85 C9 0F 84 1B 01 00 00 FF C9", [this](memory::handle ptr) {
 			m_mp_save_download = ptr.sub(26).as<PVOID>();
+			m_mp_save_download_error = ptr.add(323).rip().as<int*>();
+		});
+
+		// Source https://www.unknowncheats.me/forum/grand-theft-auto-v/442708-basket-transactions.html
+		main_batch.add("Construct Basket", "48 83 C1 70 45 8B E1 41 8B", [this](memory::handle ptr) {
+			m_construct_basket = ptr.sub(32).as<PVOID>();
 		});
 
 		main_batch.run(memory::module(nullptr));

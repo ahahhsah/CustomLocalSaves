@@ -24,6 +24,8 @@ namespace big
 
 	private:
 		bool write_default_config();
+		bool deep_compare(nlohmann::json& current_settings, const nlohmann::json& default_settings, bool compare_value = false);
+		bool save();
 
 	private:
 		bool m_running;
@@ -36,8 +38,9 @@ namespace big
 	public:
 		bool save_unmodified_stats = false;
 		bool use_human_readable_stat_names = false;
+		bool always_load_into_character_creator = false;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, save_unmodified_stats, use_human_readable_stat_names)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, save_unmodified_stats, use_human_readable_stat_names, always_load_into_character_creator)
 	};
 
 	inline auto g = menu_settings();

@@ -11,9 +11,11 @@
 #pragma once
 #include "fiber_pool.hpp"
 #include "gta/enums.hpp"
+#include "gta/stat.hpp"
 #include "hooking/hooking.hpp"
 #include "native_hooks.hpp"
 #include "natives.hpp"
+#include "services/stats/stats_service.hpp"
 #include "util/scripts.hpp"
 
 namespace big
@@ -32,6 +34,59 @@ namespace big
 		inline void NET_GAMESERVER_RETRIEVE_INIT_SESSION_STATUS(rage::scrNativeCallContext* src)
 		{
 			*src->get_arg<int*>(0) = 3;
+			src->set_return_value<BOOL>(TRUE);
+		}
+
+
+		inline void WITHDRAW_VC(rage::scrNativeCallContext* src)
+		{
+			int amount = src->get_arg<int>(0);
+			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
+			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
+			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
+			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
+			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
+			if(WALLET_BALANCE == nullptr)
+			{
+				LOG(FATAL) << "WITHDRAW_VC: Failed to find WALLET_BALANCE stat";
+				src->set_return_value<int>(0);
+				return;
+			}
+
+			if(current_bank_balance < amount || amount < 0)
+			{
+				src->set_return_value<int>(0);
+				return;
+			}
+
+			BANK_BALANCE->SetInt64Data(current_bank_balance - amount);
+			WALLET_BALANCE->SetInt64Data(current_wallet_balance + amount);
+			src->set_return_value(amount);
+		}
+
+		inline void DEPOSIT_VC(rage::scrNativeCallContext* src)
+		{
+			int amount = src->get_arg<int>(0);
+			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
+			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
+			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
+			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
+			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
+			if(WALLET_BALANCE == nullptr)
+			{
+				LOG(FATAL) << "DEPOSIT_VC: Failed to find WALLET_BALANCE stat";
+				src->set_return_value<BOOL>(FALSE);
+				return;
+			}
+
+			if(current_bank_balance < amount || amount < 0)
+			{
+				src->set_return_value<BOOL>(FALSE);
+				return;
+			}
+
+			BANK_BALANCE->SetInt64Data(current_bank_balance + amount);
+			WALLET_BALANCE->SetInt64Data(current_wallet_balance - amount);
 			src->set_return_value<BOOL>(TRUE);
 		}
 
