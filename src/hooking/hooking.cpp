@@ -46,6 +46,11 @@ namespace big
 		detour_hook_helper::add<hooks::network_can_access_multiplayer>("Network Can Access Multiplayer", (void*)g_pointers->m_network_can_access_multiplayer);
 		detour_hook_helper::add<hooks::get_stat_flag_bool>("Get Stat Flag Bool", (void*)g_pointers->m_get_stat_flag_bool);
 
+		detour_hook_helper::add<hooks::stat_ctor>("Stat Constructor", (void*)g_pointers->m_stat_ctor);
+		detour_hook_helper::add<hooks::stat_dtor>("Stat Destructor", (void*)g_pointers->m_stat_dtor);
+		detour_hook_helper::add<hooks::mp_stats_save>("MP Stats Save", (void*)g_pointers->m_mp_stats_save);
+		detour_hook_helper::add<hooks::mp_save_download>("MP Save Download", (void*)g_pointers->m_mp_save_download);
+
 		g_hooking = this;
 	}
 

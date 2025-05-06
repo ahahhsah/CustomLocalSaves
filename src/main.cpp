@@ -15,6 +15,7 @@
 #include "script_mgr.hpp"
 #include "thread_pool.hpp"
 
+#include "services/stats/stats_service.hpp"
 
 #ifdef ENABLE_EXCEPTION_HANDLER
 #include "logger/exception_handler.hpp"
@@ -83,6 +84,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    auto hooking_instance = std::make_unique<hooking>();
 				    LOG(INFO) << "Hooking initialized.";
 
+				    auto stats_service_instance          = std::make_unique<stats_service>();
+
 				    g_script_mgr.add_script(std::make_unique<script>(&backend::loop));
 #ifdef ENABLE_GUI
 				    g_script_mgr.add_script(std::make_unique<script>(&gui::script_func));
@@ -111,6 +114,8 @@ BOOL APIENTRY DllMain(HMODULE hmod, DWORD reason, PVOID)
 				    // otherwise make sure that they have stopped executing
 				    thread_pool_instance->destroy();
 				    LOG(INFO) << "Destroyed thread pool.";
+
+				    stats_service_instance.reset();
 
 				    hooking_instance.reset();
 				    LOG(INFO) << "Hooking uninitialized.";

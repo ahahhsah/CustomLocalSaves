@@ -15,6 +15,11 @@ namespace big
 
 		static uint32_t network_can_access_multiplayer(uint32_t a1, uint64_t* a2);
 		static bool get_stat_flag_bool(void* p0, const char* flag, bool default_, bool p4);
+
+		static bool stat_ctor(sStatData* _this, const char* name, void* p2);
+		static bool stat_dtor(sStatData* _this, uint32_t p2);
+		static bool mp_stats_save(void* _this, uint32_t p2, uint32_t p3, uint32_t p4, uint32_t p5, uint32_t p6);
+		static bool mp_save_download(void* _this);
 	};
 
 	class minhook_keepalive

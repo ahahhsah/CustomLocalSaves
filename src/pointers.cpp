@@ -83,6 +83,19 @@ namespace big
 			m_network_can_access_multiplayer = ptr.add(10).rip().as<PVOID>();
 		});
 
+		main_batch.add("Stat Vtables", "74 6F 48 8B 16 4D 8B C6 48 8B C8 E8", [this](memory::handle ptr) {
+			m_stat_ctor = ptr.add(12).rip().as<PVOID>();
+			m_obf_uns64_stat_data_vtable = ptr.add(19).rip().as<PVOID>();
+			m_stat_dtor = *(PVOID*)m_obf_uns64_stat_data_vtable;
+		});
+
+		main_batch.add("MP Stats Save", "48 83 EC 20 F6 81 ? ? ? ? ? 41 8B D9 45", [this](memory::handle ptr) {
+			m_mp_stats_save = ptr.sub(18).as<PVOID>();
+		});
+		main_batch.add("MP Save Download", "85 C9 0F 84 1B 01 00 00 FF C9", [this](memory::handle ptr) {
+			m_mp_save_download = ptr.sub(26).as<PVOID>();
+		});
+
 		main_batch.run(memory::module(nullptr));
 
 		m_hwnd = FindWindowW(L"grcWindow", nullptr);

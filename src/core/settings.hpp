@@ -37,47 +37,10 @@ namespace big
 		nlohmann::json m_options;
 
 	public:
-		struct settings
-		{
-			struct hotkeys
-			{
-				int menu_toggle          = VK_INSERT;
-				bool editing_menu_toggle = false;
+		bool save_unmodified_stats = false;
+		bool use_human_readable_stat_names = false;
 
-				NLOHMANN_DEFINE_TYPE_INTRUSIVE(hotkeys, menu_toggle)
-			} hotkeys{};
-
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(settings, hotkeys)
-		} settings{};
-
-		struct demo
-		{
-			bool demo_bool                 = false;
-			int demo_int                   = 1;
-			double demo_double             = 1.0;
-			int demo_combo                 = 0;
-			int64_t demo_bitset            = 62678480396171113;
-			std::string demo_vehicle_model = "";
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(demo, demo_bool, demo_int, demo_double, demo_combo, demo_bitset, demo_vehicle_model)
-		} demo{};
-
-		struct window
-		{
-			bool main              = true;
-			bool demo              = false;
-#ifdef ENABLE_GUI
-			ImFont* font_title     = nullptr;
-			ImFont* font_sub_title = nullptr;
-			ImFont* font_small     = nullptr;
-			ImFont* font_icon      = nullptr;
-#endif
-
-			NLOHMANN_DEFINE_TYPE_INTRUSIVE(window, main, demo)
-		} window{};
-
-		bool in_script_vm = false;
-
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, demo, window, settings)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, save_unmodified_stats, use_human_readable_stat_names)
 	};
 
 	inline auto g = menu_settings();

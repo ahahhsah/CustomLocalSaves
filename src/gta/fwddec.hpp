@@ -54,6 +54,8 @@ namespace rage
 	struct game_skeleton;
 }
 
+class sStatData;
+
 class GtaThread;
 
 class CGameScriptId;

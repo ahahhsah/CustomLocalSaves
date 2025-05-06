@@ -46,6 +46,14 @@ namespace big
 
 		PVOID m_network_can_access_multiplayer;
 		bool m_network_can_access_multiplayer_already_hooked = false;
+
+		PVOID m_stat_ctor;
+		PVOID m_stat_dtor;
+		PVOID m_obf_uns64_stat_data_vtable;
+
+		PVOID m_mp_stats_save;
+		PVOID m_mp_stats_load;
+		PVOID m_mp_save_download;
 	};
 
 	inline pointers* g_pointers{};
