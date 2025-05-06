@@ -20,12 +20,9 @@ namespace big
 		void destroy();
 		void init(const file& save_file);
 
-		void attempt_save();
 		bool load();
 
 	private:
-		bool deep_compare(nlohmann::json& current_settings, const nlohmann::json& default_settings, bool compare_value = false);
-		bool save();
 		bool write_default_config();
 
 	private:
