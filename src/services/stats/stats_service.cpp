@@ -15,6 +15,7 @@ namespace big
 		m_save_file_default = g_file_manager.get_project_file("./save_default0000.json");
 		m_save_file_char1   = g_file_manager.get_project_file("./save_char0001.json");
 		m_save_file_char2   = g_file_manager.get_project_file("./save_char0002.json");
+		m_save_overwrite    = g_file_manager.get_project_file("./save_overwrite.json");
 	}
 	stats_service::~stats_service()
 	{
@@ -64,9 +65,10 @@ namespace big
 		auto stats = nlohmann::json::array();
 		for (auto stat : map)
 		{
-			if (get_stat_by_hash(stat.first)->m_is_character != (char_index == 0))
+			bool char_stat = char_index > 0;
+			if (get_stat_by_hash(stat.first)->m_is_character != char_stat)
 				continue;
-			if (get_stat_by_hash(stat.first)->m_character_index != char_index)
+			if (get_stat_by_hash(stat.first)->m_character_index != char_index-1 && char_stat)
 				continue;
 
 			if (use_stat_names)
@@ -81,7 +83,7 @@ namespace big
 		json = stats;
 	}
 	template<typename T>
-	void stats_service::load_stat_map_from_json(nlohmann::json& json, T& map, bool use_stat_names)
+	void stats_service::load_stat_map_from_json(const nlohmann::json& json, T& map, bool use_stat_names)
 	{
 		if (use_stat_names)
 		{
@@ -150,7 +152,7 @@ namespace big
 		{
 			if (!m_save_file_default.exists())
 				return false;
-			
+
 			LOG(VERBOSE) << "Loading save_default0000.json";
 			file.open(m_save_file_default.get_path());
 		}
@@ -166,14 +168,22 @@ namespace big
 		{
 			if (!m_save_file_char2.exists())
 				return false;
-			
+
 			LOG(VERBOSE) << "Loading save_char0002.json";
 			file.open(m_save_file_char2.get_path());
 		}
-		nlohmann::json json;
+		else if (char_index == SAVE_OVERWRITE_INDEX)
+		{
+			if (!m_save_overwrite.exists())
+				return false;
+
+			LOG(VERBOSE) << "Loading save_overwrite.json";
+			file.open(m_save_overwrite.get_path());
+		}
 		try
 		{
-			file >> json;
+			// Ignore comments for save_overwrite.json
+			const nlohmann::json& json = nlohmann::json::parse(file, nullptr, true, /*ignore_comments*/ true);
 			bool uses_human_readable_stat_names = json["uses_human_readable_stat_names"];
 			load_stat_map_from_json(json["INT"], m_int_stats, uses_human_readable_stat_names);
 			load_stat_map_from_json(json["FLOAT"], m_float_stats, uses_human_readable_stat_names);
@@ -294,7 +304,7 @@ namespace big
 
 		int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->m_stat->GetIntData();
 		save_internal_stats_to_json(0);
-		save_internal_stats_to_json(last_character+1);
+		save_internal_stats_to_json(last_character + 1);
 	}
 
 	bool stats_service::load_stats()
@@ -304,9 +314,12 @@ namespace big
 			return false;
 		}
 
-		// Load character stats if the exist.
+		// Load character stats if they exist.
 		load_internal_stats_from_json(1);
 		load_internal_stats_from_json(2);
+
+		// Load stat overrides last.
+		load_internal_stats_from_json(SAVE_OVERWRITE_INDEX);
 
 		for (auto stat : m_all_stats)
 		{

@@ -27,13 +27,14 @@ namespace big
 		sCustomStat* get_stat_by_hash(Hash stat);
 		
 	private:
+		const uint8_t SAVE_OVERWRITE_INDEX = 111;
 		void save_internal_stats_to_json(uint8_t char_index = 0);
 		bool load_internal_stats_from_json(uint8_t char_index = 0);
 
 		template <typename T>
 		void save_stat_map_to_json(nlohmann::json& json, T& map, bool use_stat_names, uint8_t char_index);
 		template <typename T>
-		void load_stat_map_from_json(nlohmann::json& json, T& map, bool use_stat_names);
+		void load_stat_map_from_json(const nlohmann::json& json, T& map, bool use_stat_names);
 
 		std::unordered_map<Hash, sCustomStat> m_all_stats;
 
@@ -57,6 +58,7 @@ namespace big
 		file m_save_file_default;
 		file m_save_file_char1;
 		file m_save_file_char2;
+		file m_save_overwrite;
 	};
 
 	inline stats_service* g_stats_service;
