@@ -1,17 +1,59 @@
-# BigBaseV2
-A mod menu base for Grand Theft Auto V.
+# CustomLocalSaves
+A mod for Grand Theft Auto V that gives you control over your online saves.
 Strictly for educational purposes.
 
 ## Features
-* ImGui–based user interface
-* Unloading at runtime
-* Log console
-* Script fibers
-* Fiber pool
-* Access to YSC script globals
-* scrProgram–based native hook
-* MinGW compilation support
-* Headless mode (set ENABLE_GUI=OFF when configuring)
+### User editable json save files
+The save files are located at `%appdata%/CLS`.
+If you're planning on manually editing your save files you may want to enable
+`use_human_readable_stat_names` in `%appdata%/CLS/settings.json`.
+With this enabled your save files will use stat strings instead of stat hashes.
+
+### Set stats that will be set on every load.
+You may want certain stats to reset every time you load, for this create `%appdata%/CLS/save_overwrite.json`.
+It uses the same syntax as the other save files, but it is never written to.
+Here is an example `save_overwrite.json` that will refil your armor every time you load into GTA Online.
+```json
+{
+	"BOOL": [],
+	"DATE": [],
+	"FLOAT": [],
+	"INT": [
+		[
+			"MP0_MP_CHAR_ARMOUR_1_COUNT",
+			10
+		],
+		[
+			"MP0_MP_CHAR_ARMOUR_2_COUNT",
+			10
+		],
+		[
+			"MP0_MP_CHAR_ARMOUR_3_COUNT",
+			10
+		],
+		[
+			"MP0_MP_CHAR_ARMOUR_4_COUNT",
+			10
+		],
+		[
+			"MP0_MP_CHAR_ARMOUR_5_COUNT",
+			10
+		]
+	],
+	"INT64": [],
+	"PACKED": [],
+	"POS": [],
+	"STRING": [],
+	"TEXTLABEL": [],
+	"UINT16": [],
+	"UINT32": [],
+	"UINT64": [],
+	"UINT8": [],
+	"USERID": [],
+	"uses_human_readable_stat_names": true
+}
+```
+
 
 
 ## Building
@@ -24,8 +66,8 @@ To build BigBaseV2 you need:
 
 To set up the build environment, run the following commands in a terminal:
 ```bash
-git clone https://github.com/TupoyeMenu/BigBaseV2-fix.git
-cd BigBaseV2-fix
+git clone https://github.com/TupoyeMenu/CustomLocalSaves.git
+cd CustomLocalSaves
 mkdir build
 cd build
 cmake ..
@@ -41,8 +83,8 @@ To build BigBaseV2 you need:
 
 To set up the build environment, run the following commands in a terminal:
 ```bash
-git clone https://github.com/TupoyeMenu/BigBaseV2-fix.git
-cd BigBaseV2-fix
+git clone https://github.com/TupoyeMenu/CustomLocalSaves.git
+cd CustomLocalSaves
 mkdir build && cd build
 cmake .. -DCROSSCOMPILE=ON -DUSE_GCC=ON -G Ninja
 ninja
