@@ -41,10 +41,10 @@ namespace big
 		inline void WITHDRAW_VC(rage::scrNativeCallContext* src)
 		{
 			int amount = src->get_arg<int>(0);
-			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
-			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
+			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->m_stat->GetIntData();
+			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"))->m_stat;
 			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
-			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
+			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)))->m_stat;
 			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
 			if(WALLET_BALANCE == nullptr)
 			{
@@ -67,10 +67,10 @@ namespace big
 		inline void DEPOSIT_VC(rage::scrNativeCallContext* src)
 		{
 			int amount = src->get_arg<int>(0);
-			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
-			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
+			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->m_stat->GetIntData();
+			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"))->m_stat;
 			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
-			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
+			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)))->m_stat;
 			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
 			if(WALLET_BALANCE == nullptr)
 			{

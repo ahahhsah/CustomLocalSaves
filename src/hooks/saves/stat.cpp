@@ -8,8 +8,9 @@ namespace big
 {
 	bool hooks::stat_ctor(sStatData* _this, const char* name, void* p2)
 	{
+		bool ret = g_hooking->get_original<hooks::stat_ctor>()(_this, name, p2);
 		g_stats_service->register_stat(_this, name);
-		return g_hooking->get_original<hooks::stat_ctor>()(_this, name, p2);
+		return ret;
 	}
 	bool hooks::stat_dtor(sStatData* _this, uint32_t p2)
 	{
@@ -32,7 +33,8 @@ namespace big
 	{
 		if(*(int*)((size_t)_this+0x14) == 3)
 		{
-			LOG(VERBOSE) << "Loading custom stats, Index: " << *(int*)((size_t)_this+0x10);
+			int char_slot = *(int*)((size_t)_this+0x10);
+			LOG(VERBOSE) << "Loading custom stats, Index: " << char_slot;
 			if(g_stats_service->load_stats() && !g.always_load_into_character_creator)
 			{
 				// Set the load as successful
