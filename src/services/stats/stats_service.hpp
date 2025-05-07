@@ -16,8 +16,16 @@ namespace big
 		void delete_stat(sStatData* data);
 
 		sStatData* get_stat_by_hash(Hash stat);
-
+		
 	private:
+		void save_internal_stats_to_json();
+		bool load_internal_stats_from_json();
+
+		template <typename T>
+		void save_stat_map_to_json(nlohmann::json& json, T& map);
+		template <typename T>
+		void load_stat_map_from_json(nlohmann::json& json, T& map, bool use_stat_names);
+
 		std::unordered_map<sStatData*, Hash> m_all_stats;
 
 		std::unordered_map<Hash, int> m_int_stats;
