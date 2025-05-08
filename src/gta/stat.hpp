@@ -64,3 +64,30 @@ class sSubStatData : public sStatData
 public:
 	T m_data;
 };
+
+
+class CSavegameQueuedOperation_MPStats_Load
+{
+public:
+	virtual void _00();
+	virtual bool process_load(); // hooks::mp_save_download
+	virtual bool _02();
+	virtual bool return_false();
+
+public:
+	uint32_t m_result;
+	char m_pad1[4];
+	uint32_t m_char_slot;
+	uint32_t m_download_state;
+	uint32_t m_unk1;
+	char m_pad2[4];
+	uint32_t m_download_status; // Probably a sub class
+	uint32_t m_http_error;
+	char m_pad3[8];
+	char* m_save_buffer; // Also a sub class
+	char m_pad4[4];
+	uint32_t m_save_buffer_size;
+	char m_pad5[672];
+	bool m_download_successful;
+	bool m_unk_failed;
+};

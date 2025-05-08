@@ -1,9 +1,10 @@
 #include "gta/stat.hpp"
+
 #include "hooking/hooking.hpp"
 #include "logger/logger.hpp"
 #include "pointers.hpp"
-#include "util/decrypt_save.hpp"
 #include "services/stats/stats_service.hpp"
+#include "util/decrypt_save.hpp"
 
 namespace big
 {
@@ -34,45 +35,74 @@ namespace big
 	std::string pso_buffer;
 	char* og_buffer_ptr;
 	uint64_t og_buffer_size;
-	bool hooks::mp_save_download(intptr_t _this)
+	bool json_loaded   = false;
+	bool pso_loaded    = false;
+	bool tried_loading = false;
+	bool hooks::mp_save_download(CSavegameQueuedOperation_MPStats_Load* _this)
 	{
-		int download_state = *(int*)(_this+0x14);
-		int char_slot = *(int*)(_this+0x10);
-		if(download_state == 1 && g.load_fsl_files)
+		switch (_this->m_download_state)
 		{
-			auto size = g_stats_service->get_pso_file_size(char_slot);
-			LOG(VERBOSE) << "Buffer set size: " << size;
-			pso_buffer.resize(size, '\0');
-			g_stats_service->read_pso_file(char_slot, pso_buffer.data(), size);
-
-			og_buffer_ptr = *(char**)(_this+0x30);
-			og_buffer_size = *(uint32_t*)(_this+0x3C);
-			*(char**)(_this+0x30) = pso_buffer.data();
-			*(uint32_t*)(_this+0x3C) = size;
-			*(int*)(_this+0x20) = 3;
-			decrypt_save_patch::apply();
-		}
-
-		if(download_state == 3)
+		case 1:
 		{
-			LOG(VERBOSE) << "Loading custom stats, Index: " << char_slot;
-			if(g.load_fsl_files)
+			if (tried_loading)
+				break;
+
+			tried_loading = true;
+			json_loaded   = g_stats_service->load_stats();
+
+			if (json_loaded || !g.load_fsl_files)
 			{
+				// Make sure cloud load fails since we already have the stats.
+				_this->m_download_status = 2;
+				break;
+			}
+
+			auto size = g_stats_service->get_pso_file_size(_this->m_char_slot);
+			if (size == -1)
+			{
+				break;
+			}
+
+			pso_buffer.resize(size, '\0');
+			g_stats_service->read_pso_file(_this->m_char_slot, pso_buffer.data(), size);
+			pso_loaded = true;
+			LOGF(VERBOSE, "Loaded PSO file for char slot {}", _this->m_char_slot);
+
+			og_buffer_ptr             = _this->m_save_buffer;
+			og_buffer_size            = _this->m_save_buffer_size;
+			_this->m_save_buffer      = pso_buffer.data();
+			_this->m_save_buffer_size = size;
+
+			_this->m_download_status = 3;
+			decrypt_save_patch::apply();
+			break;
+		}
+		case 3:
+		{
+			if (pso_loaded)
+			{
+				_this->m_save_buffer      = og_buffer_ptr;
+				_this->m_save_buffer_size = og_buffer_size;
+
 				pso_buffer.clear();
-				*(char**)(_this+0x30) = og_buffer_ptr;
-				*(uint32_t*)(_this+0x3C) = og_buffer_size;
 				decrypt_save_patch::restore();
 			}
-
-			if(g_stats_service->load_stats() && !g.always_load_into_character_creator)
+			if (json_loaded || pso_loaded)
 			{
 				// Set the load as successful
-				LOG(VERBOSE) << "Setting load as successful";
+				LOGF(VERBOSE, "Setting load as successful for slot: {} json_loaded == {}, pso_loaded == {}", _this->m_char_slot, json_loaded, pso_loaded);
+				json_loaded   = false;
+				pso_loaded    = false;
+				tried_loading = false;
+
 				*g_pointers->m_mp_save_download_error = 0;
-				*(bool*)(_this+0x2E0) = true;
-				*(bool*)(_this+0x2E1) = false;
+				_this->m_download_successful          = true;
+				_this->m_unk_failed                   = false;
 			}
+			break;
 		}
+		}
+
 		bool ret = g_hooking->get_original<hooks::mp_save_download>()(_this);
 		return ret;
 	}

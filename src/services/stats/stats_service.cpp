@@ -65,23 +65,23 @@ namespace big
 		return nullptr;
 	}
 
-	uint32_t stats_service::get_pso_file_size(uint8_t char_index)
+	size_t stats_service::get_pso_file_size(uint8_t char_index)
 	{
 		std::ifstream pso_file;
 		if(char_index == 0)
 		{
 			if (!m_save_file_default_pso.exists())
-				return 0;
+				return -1;
 			pso_file.open(m_save_file_default_pso.get_path(), std::ios::binary);
 		}
 		else if (char_index == 1) {
 			if (!m_save_file_char1_pso.exists())
-				return 0;
+				return -1;
 			pso_file.open(m_save_file_char1_pso.get_path(), std::ios::binary);
 		}
 		else if (char_index == 2) {
 			if (!m_save_file_char2_pso.exists())
-				return 0;
+				return -1;
 			pso_file.open(m_save_file_char2_pso.get_path(), std::ios::binary);
 		}
 		pso_file.seekg(0, std::ios::end);
@@ -89,7 +89,7 @@ namespace big
 
 		return size;
 	}
-	void stats_service::read_pso_file(uint8_t char_index, char* buf, uint32_t size)
+	void stats_service::read_pso_file(uint8_t char_index, char* buf, size_t size)
 	{
 		std::ifstream pso_file;
 		if(char_index == 0)

@@ -26,8 +26,8 @@ namespace big
 
 		sCustomStat* get_stat_by_hash(Hash stat);
 
-		uint32_t get_pso_file_size(uint8_t char_index);
-		void read_pso_file(uint8_t char_index, char* buf, uint32_t size);
+		size_t get_pso_file_size(uint8_t char_index);
+		void read_pso_file(uint8_t char_index, char* buf, size_t size);
 		
 	private:
 		const uint8_t SAVE_OVERWRITE_INDEX = 111;
