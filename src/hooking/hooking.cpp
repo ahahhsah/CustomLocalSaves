@@ -50,6 +50,7 @@ namespace big
 		detour_hook_helper::add<hooks::stat_dtor>("Stat Destructor", (void*)g_pointers->m_stat_dtor);
 		detour_hook_helper::add<hooks::mp_stats_save>("MP Stats Save", (void*)g_pointers->m_mp_stats_save);
 		detour_hook_helper::add<hooks::mp_save_download>("MP Save Download", (void*)g_pointers->m_mp_save_download);
+		detour_hook_helper::add<hooks::construct_basket>("Construct Basket", (void*)g_pointers->m_construct_basket);
 
 		g_hooking = this;
 	}

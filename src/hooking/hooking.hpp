@@ -20,6 +20,7 @@ namespace big
 		static bool stat_dtor(sStatData* _this, uint32_t p2);
 		static bool mp_stats_save(void* _this, uint32_t p2, uint32_t p3, uint32_t p4, uint32_t p5, uint32_t p6);
 		static bool mp_save_download(CSavegameQueuedOperation_MPStats_Load* _this);
+		static bool construct_basket(void* _this, int *transaction_id, int category_type, int action_type, int target);
 	};
 
 	class minhook_keepalive
