@@ -75,7 +75,7 @@ namespace big
 			m_profile_stats_skip = ptr.add(2);
 		});
 
-		main_batch.add("Get Stat Flag Bool", "45 33 C9 45 33 C0 48 8B CB 48 89 45 F8",  [this](memory::handle ptr) {
+		main_batch.add("Get Stat Flag Bool", "45 33 C9 45 33 C0 48 8B CB 48 89 45 F8", [this](memory::handle ptr) {
 			m_get_stat_flag_bool = ptr.add(14).rip().as<PVOID>();
 		});
 
@@ -84,9 +84,9 @@ namespace big
 		});
 
 		main_batch.add("Stat Vtables", "74 6F 48 8B 16 4D 8B C6 48 8B C8 E8", [this](memory::handle ptr) {
-			m_stat_ctor = ptr.add(12).rip().as<PVOID>();
+			m_stat_ctor                  = ptr.add(12).rip().as<PVOID>();
 			m_obf_uns64_stat_data_vtable = ptr.add(19).rip().as<PVOID>();
-			m_stat_dtor = *(PVOID*)m_obf_uns64_stat_data_vtable;
+			m_stat_dtor                  = *(PVOID*)m_obf_uns64_stat_data_vtable;
 		});
 
 		main_batch.add("MP Stats Save", "48 83 EC 20 F6 81 ? ? ? ? ? 41 8B D9 45", [this](memory::handle ptr) {
@@ -94,11 +94,15 @@ namespace big
 		});
 		main_batch.add("MP Save Download", "85 C9 0F 84 1B 01 00 00 FF C9", [this](memory::handle ptr) {
 			m_mp_save_download_patch = ptr;
-			m_mp_save_download = ptr.sub(26).as<PVOID>();
+			m_mp_save_download       = ptr.sub(26).as<PVOID>();
 			m_mp_save_download_error = ptr.add(323).rip().as<int*>();
 		});
 
-		if(g.load_fsl_files)
+		main_batch.add("All Stats Array", "41 B0 01 48 8D 0D ? ? ? ? E8", [this](memory::handle ptr) {
+			m_stats = ptr.add(6).rip().add(8).as<rage::atArray<sStatArrayEntry>*>();
+		});
+
+		if (g.load_fsl_files)
 		{
 			main_batch.add("MP Save Decrypt", "84 D2 ? 34 48 8D 8C", [this](memory::handle ptr) {
 				m_mp_save_decrypt = ptr;

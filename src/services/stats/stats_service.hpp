@@ -24,7 +24,7 @@ namespace big
 		void register_stat(sStatData* data, const char* name);
 		void delete_stat(sStatData* data);
 
-		sCustomStat* get_stat_by_hash(Hash stat);
+		sStatData* get_stat_by_hash(Hash stat);
 
 		size_t get_pso_file_size(uint8_t char_index);
 		void read_pso_file(uint8_t char_index, char* buf, size_t size);
@@ -38,8 +38,6 @@ namespace big
 		void save_stat_map_to_json(nlohmann::json& json, T& map, bool use_stat_names, uint8_t char_index);
 		template <typename T>
 		void load_stat_map_from_json(const nlohmann::json& json, T& map, bool use_stat_names);
-
-		std::unordered_map<Hash, sCustomStat> m_all_stats;
 
 		std::unordered_map<Hash, int> m_int_stats;
 		std::unordered_map<Hash, float> m_float_stats;

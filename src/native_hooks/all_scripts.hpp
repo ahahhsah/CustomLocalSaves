@@ -40,20 +40,20 @@ namespace big
 
 		inline void WITHDRAW_VC(rage::scrNativeCallContext* src)
 		{
-			int amount = src->get_arg<int>(0);
-			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->m_stat->GetIntData();
-			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"))->m_stat;
+			int amount              = src->get_arg<int>(0);
+			int last_character      = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
+			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
 			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
-			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)))->m_stat;
+			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
 			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
-			if(WALLET_BALANCE == nullptr)
+			if (WALLET_BALANCE == nullptr)
 			{
 				LOG(FATAL) << "WITHDRAW_VC: Failed to find WALLET_BALANCE stat";
 				src->set_return_value<int>(0);
 				return;
 			}
 
-			if(current_bank_balance < amount || amount < 0)
+			if (current_bank_balance < amount || amount < 0)
 			{
 				src->set_return_value<int>(0);
 				return;
@@ -66,20 +66,20 @@ namespace big
 
 		inline void DEPOSIT_VC(rage::scrNativeCallContext* src)
 		{
-			int amount = src->get_arg<int>(0);
-			int last_character = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->m_stat->GetIntData();
-			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"))->m_stat;
+			int amount              = src->get_arg<int>(0);
+			int last_character      = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
+			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
 			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
-			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)))->m_stat;
+			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
 			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
-			if(WALLET_BALANCE == nullptr)
+			if (WALLET_BALANCE == nullptr)
 			{
 				LOG(FATAL) << "DEPOSIT_VC: Failed to find WALLET_BALANCE stat";
 				src->set_return_value<BOOL>(FALSE);
 				return;
 			}
 
-			if(current_bank_balance < amount || amount < 0)
+			if (current_bank_balance < amount || amount < 0)
 			{
 				src->set_return_value<BOOL>(FALSE);
 				return;

@@ -55,6 +55,7 @@ namespace rage
 }
 
 class sStatData;
+class sStatArrayEntry;
 class CSavegameQueuedOperation_MPStats_Load;
 
 class GtaThread;

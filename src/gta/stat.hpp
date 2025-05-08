@@ -65,6 +65,12 @@ public:
 	T m_data;
 };
 
+struct sStatArrayEntry
+{
+	Hash m_hash;
+	sStatData* m_stat;
+};
+
 
 class CSavegameQueuedOperation_MPStats_Load
 {

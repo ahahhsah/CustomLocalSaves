@@ -55,6 +55,7 @@ namespace big
 		PVOID m_mp_stats_load;
 		memory::handle m_mp_save_download_patch;
 		memory::handle m_mp_save_decrypt;
+		rage::atArray<sStatArrayEntry>* m_stats;
 		PVOID m_mp_save_download;
 		int* m_mp_save_download_error;
 
