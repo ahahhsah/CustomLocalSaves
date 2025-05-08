@@ -16,6 +16,12 @@ namespace big
 		m_save_file_char1   = g_file_manager.get_project_file("./save_char0001.json");
 		m_save_file_char2   = g_file_manager.get_project_file("./save_char0002.json");
 		m_save_overwrite    = g_file_manager.get_project_file("./save_overwrite.json");
+		if(g.load_fsl_files)
+		{
+			m_save_file_default_pso = g_file_manager.get_project_file("./save_default0000.pso");
+			m_save_file_char1_pso   = g_file_manager.get_project_file("./save_char0001.pso");
+			m_save_file_char2_pso   = g_file_manager.get_project_file("./save_char0002.pso");
+		}
 	}
 	stats_service::~stats_service()
 	{
@@ -57,6 +63,54 @@ namespace big
 			return &m_all_stats[stat_to_find];
 		}
 		return nullptr;
+	}
+
+	uint32_t stats_service::get_pso_file_size(uint8_t char_index)
+	{
+		std::ifstream pso_file;
+		if(char_index == 0)
+		{
+			if (!m_save_file_default_pso.exists())
+				return 0;
+			pso_file.open(m_save_file_default_pso.get_path(), std::ios::binary);
+		}
+		else if (char_index == 1) {
+			if (!m_save_file_char1_pso.exists())
+				return 0;
+			pso_file.open(m_save_file_char1_pso.get_path(), std::ios::binary);
+		}
+		else if (char_index == 2) {
+			if (!m_save_file_char2_pso.exists())
+				return 0;
+			pso_file.open(m_save_file_char2_pso.get_path(), std::ios::binary);
+		}
+		pso_file.seekg(0, std::ios::end);
+		auto size = pso_file.tellg();
+
+		return size;
+	}
+	void stats_service::read_pso_file(uint8_t char_index, char* buf, uint32_t size)
+	{
+		std::ifstream pso_file;
+		if(char_index == 0)
+		{
+			if (!m_save_file_default_pso.exists())
+				return;
+			pso_file.open(m_save_file_default_pso.get_path(), std::ios::binary);
+		}
+		else if (char_index == 1) {
+			if (!m_save_file_char1_pso.exists())
+				return;
+			pso_file.open(m_save_file_char1_pso.get_path(), std::ios::binary);
+		}
+		else if (char_index == 2) {
+			if (!m_save_file_char2_pso.exists())
+				return;
+			pso_file.open(m_save_file_char2_pso.get_path(), std::ios::binary);
+		}
+		
+
+		pso_file.read(buf, size);
 	}
 
 	template<typename T>

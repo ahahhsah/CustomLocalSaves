@@ -9,7 +9,12 @@ If you're planning on manually editing your save files you may want to enable
 `use_human_readable_stat_names` in `%appdata%/CLS/settings.json`.
 With this enabled your save files will use stat strings instead of stat hashes.
 
-### Set stats that will be set on every load.
+### Loading FSL saves
+Loads FSL save files if you place them in `%appdata%/CLS`, and enable `load_fsl_files` in `%appdata%/CLS/settings.json`.
+Note that FSL saves will only load if json saves were not found.
+Saving in FSL compatible format is NOT yet SUPPORTED.
+
+### Stats that will be set on every load.
 You may want certain stats to reset every time you load, for this create `%appdata%/CLS/save_overwrite.json`.
 It uses the same syntax as the other save files, but it is never written to.
 Here is an example `save_overwrite.json` that will refil your armor every time you load into GTA Online.

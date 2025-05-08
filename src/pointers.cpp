@@ -93,9 +93,17 @@ namespace big
 			m_mp_stats_save = ptr.sub(18).as<PVOID>();
 		});
 		main_batch.add("MP Save Download", "85 C9 0F 84 1B 01 00 00 FF C9", [this](memory::handle ptr) {
+			m_mp_save_download_patch = ptr;
 			m_mp_save_download = ptr.sub(26).as<PVOID>();
 			m_mp_save_download_error = ptr.add(323).rip().as<int*>();
 		});
+
+		if(g.load_fsl_files)
+		{
+			main_batch.add("MP Save Decrypt", "84 D2 ? 34 48 8D 8C", [this](memory::handle ptr) {
+				m_mp_save_decrypt = ptr;
+			});
+		}
 
 		// Source https://www.unknowncheats.me/forum/grand-theft-auto-v/442708-basket-transactions.html
 		main_batch.add("Construct Basket", "48 83 C1 70 45 8B E1 41 8B", [this](memory::handle ptr) {

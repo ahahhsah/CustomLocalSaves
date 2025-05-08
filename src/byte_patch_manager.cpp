@@ -13,6 +13,7 @@
 #include "hooking/hooking.hpp"
 #include "memory/byte_patch.hpp"
 #include "pointers.hpp"
+#include "util/decrypt_save.hpp"
 
 namespace big
 {
@@ -26,6 +27,12 @@ namespace big
 		memory::byte_patch::make(g_pointers->m_skip_money_check6.as<PVOID>(), std::vector{0x90, 0x90})->apply();
 		memory::byte_patch::make(g_pointers->m_file_not_found_check.as<PVOID>(), std::vector{0x90, 0x90})->apply(); // When a cloud file failes to load, create a new one
 		memory::byte_patch::make(g_pointers->m_profile_stats_skip.as<PVOID>(), std::vector{0x48, 0xE9})->apply();   // 
+
+		if(g.load_fsl_files)
+		{
+			memory::byte_patch::make(g_pointers->m_mp_save_download_patch.add(0x1E3).as<PVOID>(), std::vector{0x90, 0x90})->apply();
+			decrypt_save_patch::m_check_enc_param = memory::byte_patch::make(g_pointers->m_mp_save_decrypt.add(2).as<PVOID>(), std::vector{0xEB}).get();
+		}
 	}
 
 	byte_patch_manager::byte_patch_manager()

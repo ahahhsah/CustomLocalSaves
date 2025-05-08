@@ -53,6 +53,8 @@ namespace big
 
 		PVOID m_mp_stats_save;
 		PVOID m_mp_stats_load;
+		memory::handle m_mp_save_download_patch;
+		memory::handle m_mp_save_decrypt;
 		PVOID m_mp_save_download;
 		int* m_mp_save_download_error;
 

@@ -39,8 +39,9 @@ namespace big
 		bool save_unmodified_stats = false;
 		bool use_human_readable_stat_names = false;
 		bool always_load_into_character_creator = false;
+		bool load_fsl_files = false;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, save_unmodified_stats, use_human_readable_stat_names, always_load_into_character_creator)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, save_unmodified_stats, use_human_readable_stat_names, always_load_into_character_creator, load_fsl_files)
 	};
 
 	inline auto g = menu_settings();

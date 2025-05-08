@@ -25,6 +25,9 @@ namespace big
 		void delete_stat(sStatData* data);
 
 		sCustomStat* get_stat_by_hash(Hash stat);
+
+		uint32_t get_pso_file_size(uint8_t char_index);
+		void read_pso_file(uint8_t char_index, char* buf, uint32_t size);
 		
 	private:
 		const uint8_t SAVE_OVERWRITE_INDEX = 111;
@@ -59,6 +62,9 @@ namespace big
 		file m_save_file_char1;
 		file m_save_file_char2;
 		file m_save_overwrite;
+		file m_save_file_default_pso;
+		file m_save_file_char1_pso;
+		file m_save_file_char2_pso;
 	};
 
 	inline stats_service* g_stats_service;

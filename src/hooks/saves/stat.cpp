@@ -2,6 +2,7 @@
 #include "hooking/hooking.hpp"
 #include "logger/logger.hpp"
 #include "pointers.hpp"
+#include "util/decrypt_save.hpp"
 #include "services/stats/stats_service.hpp"
 
 namespace big
@@ -29,19 +30,47 @@ namespace big
 
 		return ret;
 	}
-	bool hooks::mp_save_download(void* _this)
+
+	std::string pso_buffer;
+	char* og_buffer_ptr;
+	uint64_t og_buffer_size;
+	bool hooks::mp_save_download(intptr_t _this)
 	{
-		if(*(int*)((size_t)_this+0x14) == 3)
+		int download_state = *(int*)(_this+0x14);
+		int char_slot = *(int*)(_this+0x10);
+		if(download_state == 1 && g.load_fsl_files)
 		{
-			int char_slot = *(int*)((size_t)_this+0x10);
+			auto size = g_stats_service->get_pso_file_size(char_slot);
+			LOG(VERBOSE) << "Buffer set size: " << size;
+			pso_buffer.resize(size, '\0');
+			g_stats_service->read_pso_file(char_slot, pso_buffer.data(), size);
+
+			og_buffer_ptr = *(char**)(_this+0x30);
+			og_buffer_size = *(uint32_t*)(_this+0x3C);
+			*(char**)(_this+0x30) = pso_buffer.data();
+			*(uint32_t*)(_this+0x3C) = size;
+			*(int*)(_this+0x20) = 3;
+			decrypt_save_patch::apply();
+		}
+
+		if(download_state == 3)
+		{
 			LOG(VERBOSE) << "Loading custom stats, Index: " << char_slot;
+			if(g.load_fsl_files)
+			{
+				pso_buffer.clear();
+				*(char**)(_this+0x30) = og_buffer_ptr;
+				*(uint32_t*)(_this+0x3C) = og_buffer_size;
+				decrypt_save_patch::restore();
+			}
+
 			if(g_stats_service->load_stats() && !g.always_load_into_character_creator)
 			{
 				// Set the load as successful
 				LOG(VERBOSE) << "Setting load as successful";
 				*g_pointers->m_mp_save_download_error = 0;
-				*(bool*)((size_t)_this+0x2E0) = true;
-				*(bool*)((size_t)_this+0x2E1) = false;
+				*(bool*)(_this+0x2E0) = true;
+				*(bool*)(_this+0x2E1) = false;
 			}
 		}
 		bool ret = g_hooking->get_original<hooks::mp_save_download>()(_this);
