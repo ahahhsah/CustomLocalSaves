@@ -141,7 +141,10 @@ namespace big
 		}
 		else
 		{
-			map = json;
+			for (auto stat : json)
+			{
+				map[stat[0]] = stat[1];
+			}
 		}
 	}
 
