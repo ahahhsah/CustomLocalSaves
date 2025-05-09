@@ -12,7 +12,7 @@ With this enabled your save files will use stat strings instead of stat hashes.
 ### Loading FSL saves
 Loads FSL save files if you place them in `%appdata%/CLS`, and enable `load_fsl_files` in `%appdata%/CLS/settings.json`.
 Note that FSL saves will only load if json saves were not found.
-Saving in FSL compatible format is NOT yet SUPPORTED.
+Saving in an FSL compatible format is NOT yet SUPPORTED.
 
 ### Stats that will be set on every load.
 You may want certain stats to reset every time you load, for this create `%appdata%/CLS/save_overwrite.json`.
@@ -59,7 +59,14 @@ Here is an example `save_overwrite.json` that will refil your armor every time y
 }
 ```
 
+### GTA Online without R* services
+CLS can load into GTA Online even if you don't have connection to R* services at the coast of breaking missions,
+to enable this set `no_rgs` to `true` in `%appdata%/CLS/settings.json`.
 
+## Usage
+1. Install an ASI loader, I tested with [Ultimate-ASI-Loader](https://github.com/ThirteenAG/Ultimate-ASI-Loader) as `bink2w64.dll`.
+2. Put CLS.asi into your game directory, or wherever your asi loader will load from.
+3. Run the game with a mod that has an anti-cheat bypass or use goldberg emulator.
 
 ## Building
 
@@ -101,6 +108,7 @@ ninja
 | Pocakking                                                  | [BigBaseV2](https://github.com/Pocakking/BigBaseV2)                    |
 | spankerincrease(gir489)                                    | [BigBaseV2-fix](https://bitbucket.org/gir489/bigbasev2-fix)            |
 | [YimMenu](https://github.com/YimMenu/YimMenu) contributors | Updates for newer GTA V versions, most of the code is stolen from them |
+| FSL                                                        | Saved my save, help with profile stats                                 |
 | tupoy-ya                                                   | Being stupid                                                           |
 
 ## License
