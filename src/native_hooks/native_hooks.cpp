@@ -123,19 +123,10 @@ namespace big
 		add_native_detour(0xF70EFA14FE091429, all_scripts::WITHDRAW_VC);
 		add_native_detour(0xE260E0BB9CD995AC, all_scripts::DEPOSIT_VC);
 
-		add_native_detour(0xC87E740D9F3872CC, fm_maintain_cloud_header_data::UGC_WAS_QUERY_FORCE_CANCELLED);
-		/*
-		add_native_detour(0x158EC424F35EC469, all_scripts::RETURN_TRUE); // UGC_QUERY_BY_CONTENT_ID
-		add_native_detour(0x815E5E3073DA1D67, all_scripts::RETURN_TRUE); // UGC_GET_GET_BY_CONTENT_ID
-		add_native_detour(0x02ADA21EA2F6918F, all_scripts::RETURN_TRUE); // UGC_HAS_GET_FINISHED
-		add_native_detour(0x941E5306BCD7C2C7, all_scripts::RETURN_FALSE); // UGC_DID_GET_SUCCEED
-		add_native_detour(RAGE_JOAAT("fm_maintain_cloud_header_data"), 0xE0A6138401BCB837, all_scripts::RETURN_FALSE); // UGC_GET_CONTENT_NUM
-		add_native_detour(RAGE_JOAAT("fm_maintain_cloud_header_data"), 0x4C61B39930D045DA, all_scripts::RETURN_TRUE); // CLOUD_HAS_REQUEST_COMPLETED
-		add_native_detour(RAGE_JOAAT("fm_maintain_cloud_header_data"), 0x3A3D5568AF297CD5, all_scripts::RETURN_TRUE); // CLOUD_DID_REQUEST_SUCCEED
-		add_native_detour(0xFD75DABC0957BF33, all_scripts::UGC_SET_USING_OFFLINE_CONTENT);
-		add_native_detour(0xF98DDE0A8ED09323, all_scripts::UGC_SET_QUERY_DATA_FROM_OFFLINE);
-		*/
-
+		if(g.disable_ugc)
+		{
+			add_native_detour(0xC87E740D9F3872CC, fm_maintain_cloud_header_data::UGC_WAS_QUERY_FORCE_CANCELLED);
+		}
 		add_native_detour(0x0395CB47B022E62C, all_scripts::NET_GAMESERVER_RETRIEVE_INIT_SESSION_STATUS);
 
 		for (auto& entry : *g_pointers->m_script_program_table)

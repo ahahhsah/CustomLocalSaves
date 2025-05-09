@@ -22,15 +22,6 @@ namespace big
 {
 	namespace all_scripts
 	{
-		inline void UGC_SET_USING_OFFLINE_CONTENT(rage::scrNativeCallContext* src)
-		{
-			NETWORK::UGC_SET_USING_OFFLINE_CONTENT(TRUE);
-		}
-		inline void UGC_SET_QUERY_DATA_FROM_OFFLINE(rage::scrNativeCallContext* src)
-		{
-			NETWORK::UGC_SET_USING_OFFLINE_CONTENT(TRUE);
-		}
-
 		inline void NET_GAMESERVER_RETRIEVE_INIT_SESSION_STATUS(rage::scrNativeCallContext* src)
 		{
 			*src->get_arg<int*>(0) = 3;
