@@ -78,7 +78,7 @@ namespace big
 		}
 		case 3:
 		{
-			if (!json_loaded && !pso_loaded)
+			if (!json_loaded && !pso_loaded && !g.no_rgs)
 			{
 				// Allow profile stats to sync here. Reapplied at hooks::profile_stats_download
 				skip_profile_stats_patch::restore();

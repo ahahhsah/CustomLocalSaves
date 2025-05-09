@@ -39,9 +39,9 @@ namespace big
 		bool save_unmodified_stats = false;
 		bool use_human_readable_stat_names = false;
 		bool load_fsl_files = false;
-		bool disable_ugc = false;
+		bool no_rgs = false;
 
-		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, save_unmodified_stats, use_human_readable_stat_names, load_fsl_files, disable_ugc)
+		NLOHMANN_DEFINE_TYPE_INTRUSIVE(menu_settings, save_unmodified_stats, use_human_readable_stat_names, load_fsl_files, no_rgs)
 	};
 
 	inline auto g = menu_settings();

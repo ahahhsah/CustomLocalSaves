@@ -123,7 +123,7 @@ namespace big
 		add_native_detour(0xF70EFA14FE091429, all_scripts::WITHDRAW_VC);
 		add_native_detour(0xE260E0BB9CD995AC, all_scripts::DEPOSIT_VC);
 
-		if(g.disable_ugc)
+		if(g.no_rgs)
 		{
 			add_native_detour(0xC87E740D9F3872CC, fm_maintain_cloud_header_data::UGC_WAS_QUERY_FORCE_CANCELLED);
 		}
