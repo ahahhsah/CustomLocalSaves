@@ -32,6 +32,7 @@ namespace big
 
 		if(g.load_fsl_files)
 		{
+			memory::byte_patch::make(g_pointers->m_load_check_profile_stat.as<PVOID>(), std::vector{0x90, 0x90, 0x90, 0x90, 0x90, 0x90})->apply();
 			memory::byte_patch::make(g_pointers->m_mp_save_download_patch.add(0x1E3).as<PVOID>(), std::vector{0x90, 0x90})->apply();
 			decrypt_save_patch::m_check_enc_param = memory::byte_patch::make(g_pointers->m_mp_save_decrypt.add(2).as<PVOID>(), std::vector{0xEB}).get();
 		}

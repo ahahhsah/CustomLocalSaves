@@ -109,6 +109,9 @@ namespace big
 			main_batch.add("MP Save Decrypt", "84 D2 ? 34 48 8D 8C", [this](memory::handle ptr) {
 				m_mp_save_decrypt = ptr;
 			});
+			main_batch.add("Load Check Profile Stat", "A8 01 ? ? ? ? ? ? 40 F6 C5", [this](memory::handle ptr) {
+				m_load_check_profile_stat = ptr.add(2);
+			});
 		}
 
 		// Source https://www.unknowncheats.me/forum/grand-theft-auto-v/442708-basket-transactions.html
