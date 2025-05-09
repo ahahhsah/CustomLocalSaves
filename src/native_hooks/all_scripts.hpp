@@ -34,18 +34,19 @@ namespace big
 			int amount              = src->get_arg<int>(0);
 			int last_character      = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
 			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
-			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
+			int64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
 			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
-			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
 			if (WALLET_BALANCE == nullptr)
 			{
 				LOG(FATAL) << "WITHDRAW_VC: Failed to find WALLET_BALANCE stat";
 				src->set_return_value<int>(0);
 				return;
 			}
+			int64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
 
 			if (current_bank_balance < amount || amount < 0)
 			{
+				LOGF(WARNING, "WITHDRAW_VC: Invalid amount: {}, Wallet balance: {}, Bank balance: {}", amount, current_wallet_balance, current_bank_balance);
 				src->set_return_value<int>(0);
 				return;
 			}
@@ -60,18 +61,19 @@ namespace big
 			int amount              = src->get_arg<int>(0);
 			int last_character      = g_stats_service->get_stat_by_hash(RAGE_JOAAT("MPPLY_LAST_MP_CHAR"))->GetIntData();
 			sStatData* BANK_BALANCE = g_stats_service->get_stat_by_hash(RAGE_JOAAT("BANK_BALANCE"));
-			uint64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
+			int64_t current_bank_balance = BANK_BALANCE->GetInt64Data();
 			sStatData* WALLET_BALANCE = g_stats_service->get_stat_by_hash(rage::joaat(std::format("MP{}_WALLET_BALANCE", last_character)));
-			uint64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
 			if (WALLET_BALANCE == nullptr)
 			{
 				LOG(FATAL) << "DEPOSIT_VC: Failed to find WALLET_BALANCE stat";
 				src->set_return_value<BOOL>(FALSE);
 				return;
 			}
+			int64_t current_wallet_balance = WALLET_BALANCE->GetInt64Data();
 
-			if (current_bank_balance < amount || amount < 0)
+			if (current_wallet_balance < amount || amount < 0)
 			{
+				LOGF(WARNING, "DEPOSIT_VC: Invalid amount: {}, Wallet balance: {}, Bank balance: {}", amount, current_wallet_balance, current_bank_balance);
 				src->set_return_value<BOOL>(FALSE);
 				return;
 			}
