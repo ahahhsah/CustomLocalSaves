@@ -1,10 +1,12 @@
 #include "gta/stat.hpp"
 
+#include "file_manager.hpp"
 #include "hooking/hooking.hpp"
 #include "logger/logger.hpp"
 #include "pointers.hpp"
 #include "services/stats/stats_service.hpp"
 #include "util/decrypt_save.hpp"
+#include "util/profile_stats.hpp"
 
 namespace big
 {
@@ -76,6 +78,12 @@ namespace big
 		}
 		case 3:
 		{
+			if (!json_loaded && !pso_loaded)
+			{
+				// Allow profile stats to sync here. Reapplied at hooks::profile_stats_download
+				skip_profile_stats_patch::restore();
+			}
+
 			if (pso_loaded)
 			{
 				_this->m_save_buffer      = og_buffer_ptr;

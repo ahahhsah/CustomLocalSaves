@@ -74,12 +74,14 @@ namespace big
 		main_batch.add("ProfileStatsSkip", "84 C0 ? ? ? ? ? ? 41 8A D4", [this](memory::handle ptr) {
 			m_profile_stats_skip = ptr.add(2);
 		});
-
-		main_batch.add("Get Stat Flag Bool", "45 33 C9 45 33 C0 48 8B CB 48 89 45 F8", [this](memory::handle ptr) {
-			m_get_stat_flag_bool = ptr.add(14).rip().as<PVOID>();
+		main_batch.add("ProfileStats Read Request", "48 8D ? ? ? 4C 8B C6 41 8B CE E8", [this](memory::handle ptr) {
+			m_profile_stats_download = ptr.add(12).rip().as<PVOID>();
+		});
+		main_batch.add("ProfileStats Write Request", "44 8B CF 8B D6 E8", [this](memory::handle ptr) {
+			m_profile_stats_save = ptr.add(6).rip().as<PVOID>();
 		});
 
-		main_batch.add("Network Can Access Multiplayer", "E9 36 01 00 00 33 D2 8B CB", [this](memory::handle ptr) {
+		main_batch.add("Network Can Access Multiplayer", "E9 ? 01 00 00 33 D2 8B CB", [this](memory::handle ptr) {
 			m_network_can_access_multiplayer = ptr.add(10).rip().as<PVOID>();
 		});
 

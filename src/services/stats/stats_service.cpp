@@ -100,14 +100,13 @@ namespace big
 			pso_file.open(m_save_file_char2_pso.get_path(), std::ios::binary);
 		}
 
-
 		pso_file.read(buf, size);
 	}
 
 	inline uint8_t get_char_index_from_stat(sStatData* stat)
 	{
 		uint8_t index = stat->m_flags >> 0x14 & 7;
-		return index == 6 ? 0 : index;
+		return index == 6 || index == 7 ? 0 : index;
 	}
 
 	template<typename T>

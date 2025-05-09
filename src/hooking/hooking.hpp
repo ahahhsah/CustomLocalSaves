@@ -14,13 +14,14 @@ namespace big
 		static bool init_native_tables(rage::scrProgram* program);
 
 		static uint32_t network_can_access_multiplayer(uint32_t a1, uint64_t* a2);
-		static bool get_stat_flag_bool(void* p0, const char* flag, bool default_, bool p4);
 
 		static bool stat_ctor(sStatData* _this, const char* name, void* p2);
 		static bool stat_dtor(sStatData* _this, uint32_t p2);
 		static bool mp_stats_save(void* _this, uint32_t p2, uint32_t p3, uint32_t p4, uint32_t p5, uint32_t p6);
 		static bool mp_save_download(CSavegameQueuedOperation_MPStats_Load* _this);
 		static bool construct_basket(void* _this, int *transaction_id, int category_type, int action_type, int target);
+		static bool profile_stats_download(int p0, void* p1, void* p2);
+		static bool profile_stats_save(void* p0, void* p1, uint32_t* p2, uint32_t p3);
 	};
 
 	class minhook_keepalive

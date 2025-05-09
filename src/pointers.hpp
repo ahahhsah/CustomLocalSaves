@@ -41,8 +41,8 @@ namespace big
 		memory::handle m_skip_money_check6;
 		memory::handle m_file_not_found_check;
 		memory::handle m_profile_stats_skip;
-
-		PVOID m_get_stat_flag_bool;
+		PVOID m_profile_stats_download;
+		PVOID m_profile_stats_save;
 
 		PVOID m_network_can_access_multiplayer;
 		bool m_network_can_access_multiplayer_already_hooked = false;
